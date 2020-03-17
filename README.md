@@ -26,15 +26,17 @@ I collected data from two primary sources:
 * weather data <a href = https://darksky.net/poweredby/>Powered By DarkSky</a>'s API.
 * ice measurements and historical winning times were taken from the <a href = https://www.nenanaakiceclassic.com/index.htm>Nenana Ice Classic official website</a>.
 
-I chose to start with the year 1989, because that is the earliest year that ice measurements from the contest are available. I gathered data for the months of March through May, because the winning day is generally between April 20 and May 20.
+I chose to start with the year 1989, because that is the earliest year that ice measurements from the contest are available. I gathered data for the months of January through May, because the winning day is generally between April 20 and May 20.
 
-Once I cleaned and merged the data, I ended up discarding all information for the years 1993 and 1995. Those years were missing weather information for many days, including the winning days.
+Once I cleaned and merged the data (using the notebook ice_classic_data.ipynb), I ended up discarding all information for the years 1993 and 1995. Those years were missing weather information for many days, including the winning days.
 
 I discarded all information for the days after the winning day in each year.
 
 Initially, I engineered several features that I thought would be useful: the number of daylight hours per day, binary indicators for precipitation type (rain or snow), and a running total of snow accumulation in a year. Later, I added time-series features in the form of moving averages for 3-, 5-, 7-, and 10-day windows for most features in the dataset. 
 
 I performed experiments with several models: Logistic Regression, Random Forests, Histogram Gradient Boosted Trees, Support Vector Machines, and a couple of stacked models combining Logistic Regression, Random Forests, and Support Vector Machines.
+
+I started with logistic regression (ice_classic_logreg.ipynb). I then tried SVM (ice_classic_svm.ipynb). Next were random forests and histogram gradient boosted trees (ice_classic_trees.ipynb). Finally, I tried several stacked models (ice_classic_stacking.ipynb).
 
 In the end, the most performant model was one where I fed the results of a Random Forest classifier to a Logistic Regression classification model.
 
@@ -43,7 +45,7 @@ My best model's accuracy was 95.71%. This is below the success target of 98.27%,
 
 The model successfully predicted 4 of the 5 winning days in the testing set of data. The winning day in 2019 was the earliest in the contest's history, and I suspect that's why my model was unable to predict it successfully.
 
-The model's predictions included 9 false positives (predicted winning days that weren't actually) and 1 false negative (2019, which I discussed above).
+The model's predictions included 9 false positives (incorrectly predicted winning days) and 1 false negative (2019, which I discussed above).
 
 ## Repository Contents
 The root folder of this repository contains the final model notebook (ice_classic_modeling.ipynb) and a PDF copy of the accompanying presentation I created for this project, "Headed For A Breakup."
@@ -59,9 +61,9 @@ There are 2 subfolders in this repository, "data" and "notebooks."
 * The full dataset with moving average features added (features_added.csv)
 * The final testing and training datasets (model_training_data.csv, model_testing_data.csv)
 
-### The notebooks subfolder contains 7 files:
+### The notebooks subfolder contains 8 files:
 
-* Two notebooks for collecting data from the internet (ice_classic_scraper_darksky.ipynb, ice_classic_scraper_ice_data.ipynb)
+* Three notebooks for collecting data from the internet (ice_classic_gather_darksky.ipynb, ice_classic_gather_ice_data.ipynb, ice_classic_gather_river_flow.ipynb)
 * A notebook for data exploration and cleaning (ice_classic_data.ipynb)
 * Four notebooks for modeling experimentation (ice_classic_logreg.ipynb, ice_classic_trees.ipynb, ice_classic_svm.ipynb, ice_classic_stacking.ipynb)
 
